@@ -39,6 +39,7 @@ const UserProfile = () => {
       <p>Email: {user.email}</p>
       <p>Skills: {user.skills.length ? user.skills.join(", ") : "No skills added"}</p>
       <p>Causes Supported: {user.causesSupported.length ? user.causesSupported.join(", ") : "No causes added"}</p>
+      <p>Volunteer History:{user.volunteerHistory.length ? user.volunteerHistory.join(", "): "No past volunteer history"}</p>
       
       <button onClick={handleEditProfile} className="btn btn-primary">
         Edit Profile

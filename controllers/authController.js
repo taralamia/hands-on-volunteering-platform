@@ -163,7 +163,6 @@ async function verifyEmail(req, res) {
   }
 // Get User Profile
 async function editProfilePage(req, res) {
-  console.log("User in User Profile:", req.user);
 
   try {
     // Fetch the user's profile from the database using the authenticated user ID
@@ -180,6 +179,7 @@ async function editProfilePage(req, res) {
       skills: req.user.skills,
       causesSupported: req.user.causesSupported,
       email: req.user.email,
+      volunteerHistory: req.user.volunteerHistory,
     });
   } catch (error) {
     res.status(500).json({ message: "Error fetching user data", error: error.message });

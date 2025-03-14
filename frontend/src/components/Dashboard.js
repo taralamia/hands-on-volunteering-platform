@@ -13,18 +13,7 @@ const Dashboard = () => {
         >
           View Profile
         </button>
-        <button
-          className="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600"
-          onClick={() => navigate("/history")}
-        >
-          Volunteer History
-        </button>
-        <button
-          className="w-full p-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600"
-          onClick={() => navigate("/contributions")}
-        >
-          Contributions
-        </button>
+        
       </div>
     </div>
   );

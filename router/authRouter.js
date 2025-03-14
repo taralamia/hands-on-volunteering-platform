@@ -25,4 +25,5 @@ router.post("/verify-email", verifyEmail); // Email verification
 // Route to display the edit profile page (GET /profile/edit)
 router.get("/profile/edit",authMiddleware,editProfilePage);
 router.put("/profile/editButton",authMiddleware,editProfile);
+
 module.exports = router;
