@@ -10,7 +10,8 @@ const {
     verifyEmail, 
     postLogin, 
     editProfilePage,
-    editProfile 
+    editProfile,
+    editVolunteerHistory
   } = require("../controllers/authController");
   const authMiddleware = require("../middlewares/users/authMiddleware");
 const router = express.Router();
@@ -25,5 +26,5 @@ router.post("/verify-email", verifyEmail); // Email verification
 // Route to display the edit profile page (GET /profile/edit)
 router.get("/profile/edit",authMiddleware,editProfilePage);
 router.put("/profile/editButton",authMiddleware,editProfile);
-
+router.put("/profile/editVolunteerHistory",authMiddleware,editVolunteerHistory);
 module.exports = router;

@@ -3,22 +3,23 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const EditProfile = () => {
-  const [skills, setSkills] = useState([]);
-  const [causesSupported, setCausesSupported] = useState([]);
+  const [skills, setSkills] = useState("");
+  const [causesSupported, setCausesSupported] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Fetch the current profile details
+  // Fetch the current profile details (but keep input fields blank)
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/auth/profile/edit", {
+        await axios.get("http://localhost:5000/auth/profile/edit", {
           withCredentials: true,
         });
 
-        setSkills(response.data.skills || []);
-        setCausesSupported(response.data.causesSupported || []);
+        // Keep input fields blank even after fetching
+        setSkills("");
+        setCausesSupported("");
         setLoading(false);
       } catch (err) {
         console.error("Error fetching profile:", err);
@@ -30,21 +31,19 @@ const EditProfile = () => {
     fetchProfile();
   }, []);
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Save Skills & Causes
+  const handleSaveSkillsCauses = async () => {
     try {
-      const response = await axios.put(
-        "http://localhost:5000/auth/profile/editButton",
+      await axios.put(
+        "http://localhost:5000/auth/profile/editSkillsCauses",
         { skills, causesSupported },
         { withCredentials: true }
       );
-
-      alert("Profile updated successfully!");
-      navigate("/profile/edit"); // Redirect to profile page
+      alert("Skills & Causes updated successfully!");
+      navigate("/profile/edit");
     } catch (err) {
-      console.error("Error updating profile:", err);
-      setError("Failed to update profile.");
+      console.error("Error updating skills & causes:", err);
+      setError("Failed to update skills & causes.");
     }
   };
 
@@ -55,27 +54,30 @@ const EditProfile = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <>
           {error && <p style={{ color: "red" }}>{error}</p>}
 
+          {/* Skills & Causes */}
           <label>Skills:</label>
           <input
             type="text"
-            value={skills.join(", ")}
-            onChange={(e) => setSkills(e.target.value.split(",").map((s) => s.trim()))}
+            value={skills}
+            onChange={(e) => setSkills(e.target.value)}
             placeholder="Enter skills separated by commas"
           />
 
           <label>Causes Supported:</label>
           <input
             type="text"
-            value={causesSupported.join(", ")}
-            onChange={(e) => setCausesSupported(e.target.value.split(",").map((c) => c.trim()))}
+            value={causesSupported}
+            onChange={(e) => setCausesSupported(e.target.value)}
             placeholder="Enter causes separated by commas"
           />
 
-          <button type="submit" className="btn btn-primary">Save Changes</button>
-        </form>
+          <button onClick={handleSaveSkillsCauses} className="btn btn-primary">
+            Save Skills & Causes
+          </button>
+        </>
       )}
     </div>
   );

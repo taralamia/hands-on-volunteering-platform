@@ -187,21 +187,31 @@ async function editProfilePage(req, res) {
 }
 // Update user profile
 async function editProfile(req, res) {
-  console.log("Hit");
   console.log("User in editProfile:", req.user);
 
-  const { skills, causesSupported } = req.body;
+  const { skills, causesSupported, volunteerHistory } = req.body;
 
   try {
-    // Validate that the required fields are present
-    if (!skills || !Array.isArray(skills) || !causesSupported || !Array.isArray(causesSupported)) {
+    // Validate that skills and causesSupported are arrays
+    if (!Array.isArray(skills) || !Array.isArray(causesSupported)) {
       return res.status(400).json({ message: "Skills and causesSupported must be provided as arrays" });
     }
 
-    // Update the user's profile
+    // Validate that volunteerHistory (if provided) is an array of objects
+    if (volunteerHistory && !Array.isArray(volunteerHistory)) {
+      return res.status(400).json({ message: "Volunteer history must be an array of objects" });
+    }
+
+    // Update the user's profile (Replacing the entire volunteerHistory instead of appending)
     const user = await User.findOneAndUpdate(
       { email: req.user.email },
-      { $set: { skills, causesSupported } },
+      {
+        $set: { 
+          skills, 
+          causesSupported, 
+          ...(volunteerHistory ? { volunteerHistory } : {}) // Replace history instead of pushing
+        },
+      },
       { new: true }
     );
 
@@ -215,15 +225,41 @@ async function editProfile(req, res) {
       user: {
         skills: user.skills,
         causesSupported: user.causesSupported,
+        volunteerHistory: user.volunteerHistory,
       },
     });
   } catch (error) {
     res.status(500).json({ message: "Error updating profile", error: error.message });
   }
 }
+// Update Volunteer History
+async function editVolunteerHistory(req, res) {
+  console.log("User in editVolunteerHistory:", req.user);
 
+  const { volunteerHistory } = req.body;
 
-  function generateVerificationCode() {
+  try {
+    if (!Array.isArray(volunteerHistory)) {
+      return res.status(400).json({ message: "Volunteer history must be an array of objects" });
+    }
+
+    const user = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { $push: { volunteerHistory: { $each: volunteerHistory } } },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "Volunteer history updated successfully", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating volunteer history", error: error.message });
+  }
+}
+
+function generateVerificationCode() {
     return crypto.randomInt(100000, 999999).toString();
   }
   module.exports ={
@@ -232,5 +268,6 @@ async function editProfile(req, res) {
       verifyEmail,
       postLogin,
       editProfilePage,
-      editProfile
+      editProfile,
+      editVolunteerHistory
   };      
