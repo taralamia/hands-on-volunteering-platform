@@ -32,16 +32,14 @@ The project enables users to sign up, log in securely, and manage their profiles
      ```bash
       npm start
   ## Frontend setup
-1. **Clone the repository**:
-    ```bash
-   git clone https://github.com/taralamia/hands-on-volunteering-platform.git
-2. **Navigate to frontend directory**:
+
+1. **Navigate to frontend directory**:
    ```bash
     cd frontend
-3. **Install frontend dependencies**:
+2. **Install frontend dependencies**:
    ```bash
    cd frontend
-4. **Run the front end server**:
+3. **Run the front end server**:
    ```bash
    npm start
    
