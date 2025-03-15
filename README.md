@@ -28,18 +28,18 @@ The project enables users to sign up, log in securely, and manage their profiles
 3. **Create a .env file**:
    JWT_SECRET=your_jwt_secret_key
    MONGO_URI=your_mongodb_connection_uri
-4. **Run the backend server**:
+4. **Navigate to the backend server**:
      ```bash
+      cd backend
+5. **Run the application**
+   ```bash
       npm start
   ## Frontend setup
 
 1. **Navigate to frontend directory**:
    ```bash
     cd frontend
-2. **Install frontend dependencies**:
-   ```bash
-   cd frontend
-3. **Run the front end server**:
+2. **Run the front end server**:
    ```bash
    npm start
    
