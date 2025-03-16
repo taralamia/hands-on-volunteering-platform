@@ -30,13 +30,16 @@ const EditProfile = () => {
 
     fetchProfile();
   }, []);
-
-  // Save Skills & Causes
   const handleSaveSkillsCauses = async () => {
     try {
+      const skillsArray = skills.split(",").map((skill) => skill.trim());
+      const causesSupportedArray = causesSupported
+        .split(",")
+        .map((cause) => cause.trim());
+
       await axios.put(
-        "http://localhost:5000/auth/profile/editSkillsCauses",
-        { skills, causesSupported },
+        "http://localhost:5000/auth/profile/editButton",
+        { skills: skillsArray, causesSupported: causesSupportedArray },
         { withCredentials: true }
       );
       alert("Skills & Causes updated successfully!");
@@ -46,7 +49,6 @@ const EditProfile = () => {
       setError("Failed to update skills & causes.");
     }
   };
-
   return (
     <div className="edit-profile-container">
       <h2>Edit Profile</h2>

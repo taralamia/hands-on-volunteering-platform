@@ -88,14 +88,13 @@ async function addUser(req, res, next) {
   
     try {
       const verificationCode = generateVerificationCode();
-      const verificationCodeExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours expiry
+      const verificationCodeExpires = Date.now() + 24 * 60 * 60 * 1000; 
   
       let newUser = new User({
         email: req.body.email,
         password: req.body.password,
         verificationCode,
         verificationCodeExpires,
-        // Only include other fields if they are present, otherwise leave them out.
         firstName: req.body.firstName || '',
         lastName: req.body.lastName || '',
         username: req.body.username || `${req.body.firstName} ${req.body.lastName}`,
@@ -165,14 +164,13 @@ async function verifyEmail(req, res) {
 async function editProfilePage(req, res) {
 
   try {
-    // Fetch the user's profile from the database using the authenticated user ID
+    // Fetch the user's profile from the database using the authenticated email
     const {email} = req.body;
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Send the current user profile data (skills, causes, etc.)
     res.json({
       firstName: req.user.firstName,
       lastName: req.user.lastName,
@@ -192,24 +190,21 @@ async function editProfile(req, res) {
   const { skills, causesSupported, volunteerHistory } = req.body;
 
   try {
-    // Validate that skills and causesSupported are arrays
     if (!Array.isArray(skills) || !Array.isArray(causesSupported)) {
       return res.status(400).json({ message: "Skills and causesSupported must be provided as arrays" });
     }
 
-    // Validate that volunteerHistory (if provided) is an array of objects
     if (volunteerHistory && !Array.isArray(volunteerHistory)) {
       return res.status(400).json({ message: "Volunteer history must be an array of objects" });
     }
 
-    // Update the user's profile (Replacing the entire volunteerHistory instead of appending)
     const user = await User.findOneAndUpdate(
       { email: req.user.email },
       {
-        $set: { 
+        $push: { 
           skills, 
           causesSupported, 
-          ...(volunteerHistory ? { volunteerHistory } : {}) // Replace history instead of pushing
+          ...(volunteerHistory ? { volunteerHistory } : {}) 
         },
       },
       { new: true }
