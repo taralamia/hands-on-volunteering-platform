@@ -45,6 +45,7 @@
     "react-router-dom": "^7.3.0"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "vite": "^6.2.2"
   }
 }
