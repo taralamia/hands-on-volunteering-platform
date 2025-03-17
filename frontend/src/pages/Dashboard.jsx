@@ -13,14 +13,20 @@ const Dashboard = () => {
         >
           View Profile
         </button>
-          {/* Volunteer History Button */}
+        {/* Volunteer History Button */}
         <button
           className="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600"
           onClick={() => navigate("/profile/volunteer-history")}
         >
           Update Volunteer History
         </button>
-        
+        {/* Event Button */}
+        <button
+          className="w-full p-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600"
+          onClick={() => navigate("/event/eventPage")}
+        >
+          Events
+        </button>
       </div>
     </div>
   );

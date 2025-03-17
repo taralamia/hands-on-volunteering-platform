@@ -13,7 +13,7 @@ const {
     editProfile,
     editVolunteerHistory
   } = require("../controllers/authController");
-  const authMiddleware = require("../middlewares/users/authMiddleware");
+const authMiddleware = require("../middlewares/users/authMiddleware");
 const router = express.Router();
 
 

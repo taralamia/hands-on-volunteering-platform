@@ -13,6 +13,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const authRouter = require('./router/authRouter');
+const eventRouter = require('./router/eventRouter');
 const { notFoundHandler, errorHandler } = require('./middlewares/common/errorHandler');
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(cors({ origin: "http://localhost:5174", methods: ["GET", "POST", "PUT", 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use('/auth', authRouter);
+app.use('/event',eventRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);
 

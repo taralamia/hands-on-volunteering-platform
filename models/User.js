@@ -31,25 +31,25 @@ const userSchema = mongoose.Schema(
         required: true,
       },
       avatar: { 
-        type: String // Single profile image URL
+        type: String 
       },
       skills: {
-        type: [String], // Array of user skills
+        type: [String], 
         required: false,
         default: []
       },
       causesSupported: {
-        type: [String], // Causes user supports (e.g., education, healthcare)
+        type: [String], 
         required: false,
         default: []
       },
       volunteerHistory: [
         {
-          eventId: mongoose.Schema.Types.ObjectId, // Reference to a volunteering event
-          title: String, // Event name
-          date: Date, // Date of participation
-          hoursContributed: Number, // Number of hours volunteered
-          role: String, // e.g., Organizer, Participant
+          eventId: mongoose.Schema.Types.ObjectId, 
+          title: String, 
+          date: Date, 
+          hoursContributed: Number,
+          role: String, 
         }
       ],
       verificationCode: String, 
