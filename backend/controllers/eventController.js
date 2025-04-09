@@ -3,6 +3,7 @@
 // internal imports
 const Event = require("../../backend/models/eventModel");
 const HelpPost = require('../../backend/models/helpPostModel');
+const User = require("../../backend/models/User");
 
 // Event creation
 async function createEvent  (req, res) {
@@ -26,11 +27,13 @@ async function getEvents  (req, res)  {
 
     if (category) filter.category = category;
     if (location) filter.location = location;
+    let events = await Event.find(filter).populate("attendees", "name email");
+
     if (availability) {
-      filter.maxParticipants = { $gte: parseInt(availability) };
+      const minAvailableSlots = parseInt(availability);
+      events = events.filter(event => event.availability >= minAvailableSlots);
     }
 
-    const events = await Event.find(filter).populate("attendees", "name email");
 
     res.status(200).json(events);
   } catch (error) {
@@ -40,20 +43,25 @@ async function getEvents  (req, res)  {
 // Join event function (One-click registration)
 async function joinEvent  (req, res)  {
     const { eventId } = req.params;
-    const userId = req.user._id;  
-  
+    const email = req.user.email;  
     try {
+      const user = await User.findOne({ email });
+      if (!user) return res.status(404).json({ message: 'User not found' });
       const event = await Event.findById(eventId);
       if (!event) return res.status(404).json({ message: 'Event not found' });
   
-      if (event.attendees.includes(userId)) {
-        return res.status(400).json({ message: 'Already joined the event' });
+      if (event.attendees.includes(user._id)) {
+        return res.status(400).json({ message: "You have already joined this event" });
       }
-  
-      event.attendees.push(userId);
+      if (event.attendees.length >= event.maxParticipants) {
+        return res.status(400).json({ message: 'Event is already full' });
+      }
+    
+      event.attendees.push(user._id);
       await event.save();
       res.status(200).json({ message: 'Successfully joined the event' });
     } catch (error) {
+      console.log("Error",error);
       res.status(500).json({ message: 'Error joining event', error });
     }
   };

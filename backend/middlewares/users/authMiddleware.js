@@ -7,7 +7,6 @@ const authMiddleware = async (req, res, next) => {
     const token = req.cookies.token;  
 
     if (!token) {
-      console.log("❌ No token found!");
       return res.status(401).json({
         success: false,
         message: 'Access denied. No token provided.',

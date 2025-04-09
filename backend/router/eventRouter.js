@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post("/createEvents",createEvent,authMiddleware);
 router.get("/viewEvents",getEvents);
-router.post("/join/:eventId",joinEvent,authMiddleware);
+router.post("/join/:eventId",authMiddleware,joinEvent);
 router.post("/help-post/create",createHelpPost);
 
 module.exports = router;
