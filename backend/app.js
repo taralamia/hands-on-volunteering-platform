@@ -12,9 +12,9 @@ const dotenv = require('dotenv');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const authRouter = require('./router/authRouter');
-const eventRouter = require('./router/eventRouter');
-const { notFoundHandler, errorHandler } = require('./middlewares/common/errorHandler');
+const authRouter = require('../backend/router/authRouter');
+const eventRouter = require('../backend/router/eventRouter');
+const { notFoundHandler, errorHandler } = require('../backend/middlewares/common/errorHandler');
 
 const app = express();
 dotenv.config();

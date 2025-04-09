@@ -1,9 +1,9 @@
 // external imports
 const express = require('express');
 // internal imports
-const {addUserValidators}= require("../middlewares/users/userValidators");
-const{} = require("../middlewares/users/sessionMiddleware");
-const User = require("../models/User");
+const {addUserValidators}= require("../../backend/middlewares/users/userValidators");
+const{} = require("../../backend/middlewares/users/sessionMiddleware");
+const User = require("../../backend/models/User");
 const { 
     getLogin, 
     addUser, 
@@ -12,8 +12,8 @@ const {
     editProfilePage,
     editProfile,
     editVolunteerHistory
-  } = require("../controllers/authController");
-const authMiddleware = require("../middlewares/users/authMiddleware");
+  } = require("../../backend/controllers/authController");
+const authMiddleware = require("../../backend/middlewares/users/authMiddleware");
 const router = express.Router();
 
 

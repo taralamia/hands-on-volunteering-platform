@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const VerifyEmail = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email || ""; // ✅ Safer fallback
+  const email = location.state?.email || "";
 
   const [verificationCode, setVerificationCode] = useState("");
   const [error, setError] = useState("");
@@ -22,12 +22,12 @@ const VerifyEmail = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/auth/verify-email", {  // ✅ Correct API URL
+      const response = await fetch("http://localhost:5000/auth/verify-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, code: verificationCode }), // ✅ Match backend field names
+        body: JSON.stringify({ email, code: verificationCode }),
       });
 
       const data = await response.json();
@@ -38,9 +38,7 @@ const VerifyEmail = () => {
 
       console.log("Email verified successfully:", data.message);
 
-      // ✅ Redirect to login after success
       navigate("/login");
-
     } catch (error) {
       setError(error.message || "Failed to verify email. Please try again.");
       console.error("Error during email verification:", error);
@@ -52,9 +50,12 @@ const VerifyEmail = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-center mb-4">Verify Email</h2>
+        <h2 className="text-2xl font-semibold text-center mb-4">
+          Verify Email
+        </h2>
         <p className="text-sm text-center mb-4">
-          A verification code has been sent to <strong>{email || "your email"}</strong>. Please enter the code below.
+          A verification code has been sent to{" "}
+          <strong>{email || "your email"}</strong>. Please enter the code below.
         </p>
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">

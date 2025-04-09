@@ -3,20 +3,20 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const UserProfile = () => {
-  const [user, setUser] = useState(null);  // State to hold the user data
+  const [user, setUser] = useState(null); // State to hold the user data
   const navigate = useNavigate();
 
-  // Fetch user profile data when component mounts
   useEffect(() => {
-    // Function to fetch user profile
     const fetchUserProfile = async () => {
       try {
-        // Full backend URL with /profile/edit
-        const response = await axios.get("http://localhost:5000/auth/profile/edit", {
-          withCredentials: true,  // Ensures cookies are sent along with the request
-        });
-        
-        setUser(response.data);  // Set the user data in state
+        const response = await axios.get(
+          "http://localhost:5000/auth/profile/edit",
+          {
+            withCredentials: true, // Ensures cookies are sent along with the request
+          }
+        );
+
+        setUser(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -26,26 +26,35 @@ const UserProfile = () => {
   }, []);
 
   const handleEditProfile = () => {
-    navigate("/profile/editButton");  // Redirect to the edit profile page
+    navigate("/profile/editButton");
   };
 
   if (!user) {
-    return <div>Loading...</div>;  // Show a loading message if user data is not available
+    return <div>Loading...</div>;
   }
 
   return (
     <div>
       <h2>{user.firstName}'s Profile</h2>
       <p>Email: {user.email}</p>
-      <p>Skills: {user.skills.length ? user.skills.join(", ") : "No skills added"}</p>
-      <p>Causes Supported: {user.causesSupported.length ? user.causesSupported.join(", ") : "No causes added"}</p>
-      
+      <p>
+        Skills:{" "}
+        {user.skills.length ? user.skills.join(", ") : "No skills added"}
+      </p>
+      <p>
+        Causes Supported:{" "}
+        {user.causesSupported.length
+          ? user.causesSupported.join(", ")
+          : "No causes added"}
+      </p>
+
       <h3>Volunteer History and Contributions:</h3>
       {user.volunteerHistory && user.volunteerHistory.length > 0 ? (
         <ul>
           {user.volunteerHistory.map((entry, index) => (
             <li key={index}>
-              <strong>{entry.title}</strong> - {entry.date} - {entry.hoursContributed} hours - <em>{entry.role}</em>
+              <strong>{entry.title}</strong> - {entry.date} -{" "}
+              {entry.hoursContributed} hours - <em>{entry.role}</em>
             </li>
           ))}
         </ul>
